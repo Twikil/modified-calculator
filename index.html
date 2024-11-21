@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+ <style>
+ .calculator {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+    gap: 10px;
+  }
+  
+  button {
+    width: 20%;
+    padding:30px;
+    font-size: 20px;
+   
+  }
+  
+  #result {
+    width: 30%;
+    padding: 10px;
+    text-align: right;
+    font-size: 24px;
+    
+    
+  }
+  </style>
+</head>
+<body>
+  <input style="border:solid black 10px;border-radius: 5px; " type="text" id="result">
+  <div class="calculator">
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('7')">7</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('8')">8</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('9')">9</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;"onclick="addToResult('/')">/</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('4')">4</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('5')">5</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('6')">6</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;"onclick="addToResult('*')">*</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('1')">1</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('2')">2</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('3')">3</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;"onclick="addToResult('-')">-</button>
+    <button style="background-color:green;font-weight:bolder;"onclick="addToResult('0')">0</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;"onclick="addToResult('.')">.</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;"onclick="clearResult()">C</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;"onclick="addToResult('+')">+</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;"onclick="calculate()">=</button>
+    <button style="background-color:green;font-weight:bolder;font-size: x-large;" onclick="deleteLastCharacter()">D</button>
+    
+  </div>
+  <script>
+    const result = document.getElementById("result");
+    const buttons = document.querySelectorAll('button');
+
+    let currentInput = '';
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const value = button.textContent;
+
+        if (value === 'C') {
+          clear();
+        } else if (value === 'D') {
+          deleteLastCharacter();
+        } else if (value === '=') {
+          calculate();
+        } else {
+          currentInput += value;
+          result.value = currentInput;
+        }
+      });
+    });
+        
+       
+
+    function clear() {
+      currentInput = '';
+      result.value = '';
+    }
+
+    function deleteLastCharacter() {
+      currentInput = currentInput.slice(0, -1);
+      result.value = currentInput;
+    }
+
+
+    
+
+    
+    function calculate() {
+      try {
+        
+        const expression = currentInput;
+        const tokens = expression.split(/(\+|\-|\*|\/)/);
+        let resultValue = parseFloat(tokens[0]);
+
+        for (let i = 1; i < tokens.length; i += 2) {
+          const operator = tokens[i];
+          const operand = parseFloat(tokens[i + 1]);
+
+          switch (operator) {
+            case '+':
+              resultValue   
+              += operand;
+              break;
+            case '-':
+              resultValue -= operand;
+              break;
+            case '*':
+              resultValue *= operand;
+              break;
+            case '/':
+              resultValue /= operand;
+              break;   
+
+          }
+        }
+
+        result.value = resultValue;
+        currentInput = resultValue.toString();
+      } catch (error) {
+        result.value = 'Error';
+      }
+    }
+     
+  </script>
+</body>
+</html>
